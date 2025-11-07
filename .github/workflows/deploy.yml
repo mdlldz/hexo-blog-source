@@ -32,7 +32,7 @@ jobs:
         uses: peaceiris/actions-gh-pages@v4
         with:
           # 1. 替换成你的 Pages 仓库（格式：用户名/仓库名，不用带 git@ 前缀）
-          external_repository: git@github.com:yating1022/yating1022.github.io.git
+          external_repository: yating1022/yating1022.github.io
           # 2. Pages 仓库的分支（main 或 gh-pages）
           publish_branch: main
           # 3. 部署目录（固定 public）
