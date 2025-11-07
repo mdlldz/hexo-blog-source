@@ -1,6 +1,5 @@
 name: Hexo Auto Deploy to GitHub Pages
 
-# 触发条件：main分支有push时自动执行
 on:
   push:
     branches: [ main ]
@@ -9,40 +8,36 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      # 拉取源码
       - name: Checkout Source
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      # 安装Node.js（和你本地/服务器一致：20.19.0）
       - name: Set Up Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20.19.0'
           cache: 'npm'
 
-      # 安装依赖
       - name: Install Dependencies
         run: |
           npm install -g hexo-cli
           npm install
 
-      # 构建静态文件
       - name: Generate Static Files
         run: hexo clean && hexo generate
 
-      # 部署到Pages仓库
+      # 👇 重点修改这部分：适配 v4 插件的新参数 + 用 PAT 令牌认证
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
         with:
-          # 关键1：替换成你的Pages仓库SSH地址（比如 git@github.com:xxx/xxx.github.io.git）
-          repo: git@github.com:yating1022/yating1022.github.io.git
-          # 关键2：使用之前配置的Secrets（名称必须和你之前填的一致：HEXO_DEPLOY_TOKEN）
-          deploy_key: ${{ secrets.HEXO_DEPLOY_TOKEN }}
-          # 关键3：Pages仓库的分支（之前是main就填main，是gh-pages就填gh-pages）
-          branch: main
-          # 部署的文件目录（固定为public）
+          # 1. 替换成你的 Pages 仓库（格式：用户名/仓库名，不用带 git@ 前缀）
+          external_repository: git@github.com:yating1022/yating1022.github.io.git
+          # 2. Pages 仓库的分支（main 或 gh-pages）
+          publish_branch: main
+          # 3. 部署目录（固定 public）
           publish_dir: ./public
-          # 自动部署的提交信息
+          # 4. 用 PAT 令牌认证（对应你配置的 Secrets 名称）
+          personal_token: ${{ secrets.HEXO_DEPLOY_TOKEN }}
+          # 5. 自动部署的提交信息
           commit_message: 'Auto deploy: ${{ github.sha }}'
