@@ -27,17 +27,11 @@ jobs:
       - name: Generate Static Files
         run: hexo clean && hexo generate
 
-      # 👇 重点修改这部分：适配 v4 插件的新参数 + 用 PAT 令牌认证
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
         with:
-          # 1. 替换成你的 Pages 仓库（格式：用户名/仓库名，不用带 git@ 前缀）
           external_repository: yating1022/yating1022.github.io
-          # 2. Pages 仓库的分支（main 或 gh-pages）
           publish_branch: main
-          # 3. 部署目录（固定 public）
           publish_dir: ./public
-          # 4. 用 PAT 令牌认证（对应你配置的 Secrets 名称）
           personal_token: ${{ secrets.HEXO_DEPLOY_TOKEN }}
-          # 5. 自动部署的提交信息
           commit_message: 'Auto deploy: ${{ github.sha }}'
