@@ -30,7 +30,7 @@ jobs:
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
         with:
-          external_repository: yating1022/yating1022.github.io
+          external_repository: mdlldz/mdlldz.github.io
           publish_branch: main
           publish_dir: ./public
           personal_token: ${{ secrets.HEXO_DEPLOY_TOKEN }}
